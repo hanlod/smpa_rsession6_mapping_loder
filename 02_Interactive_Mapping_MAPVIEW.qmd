@@ -38,7 +38,7 @@ Let's quickly review how we use it.
 
 # uncomment to run, then recomment it out so you don't run it every time
 
-# census_api_key("APIKEYCODE", install=TRUE)
+ census_api_key("2a6f8c21a30d3024e038d67d7d4eba647dc79cd4", install=TRUE)
 
 
 ```
@@ -194,7 +194,7 @@ mypopup <- glue::glue("<strong>{va_counties_withgeo$NAM}</strong><br />
   lapply(htmltools::HTML)
 
 # mylabel <- glue::glue("{all_data$State} {all_data$PctChange10_20}%") %>%
-#   lapply(htmltools::HTML)
+  # lapply(htmltools::HTML)
 
 ```
 
@@ -211,7 +211,7 @@ head(mypopup)
 mapview(va_counties_withgeo, zcol = "medincome", 
          col.regions = RColorBrewer::brewer.pal(9, "Greens"), 
          alpha.regions = 1,
-         popup = mypopup)
+         popup = mypopup, label = mylabel)
 
 ```
 

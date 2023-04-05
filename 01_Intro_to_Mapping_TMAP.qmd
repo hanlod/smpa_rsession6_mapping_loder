@@ -188,12 +188,12 @@ tm_shape(states_geo) +
 # without cb
 
 # not run
-# states_geo_nocb <- tigris::states(resolution = "20m") %>% 
-#   filter(STUSPS %in% vector_50anddc,
-#          !STUSPS %in% c("AK", "HI"))
-# 
-# tm_shape(states_geo_nocb) +
-#   tm_polygons()
+ states_geo_nocb <- tigris::states(resolution = "20m") %>% 
+   filter(STUSPS %in% vector_continentalus,
+          !STUSPS %in% c("AK", "HI"))
+ 
+ tm_shape(states_geo_nocb) +
+   tm_polygons()
 ```
 
 Notice what's different? (Hint: look at MI and VA)
@@ -205,13 +205,13 @@ you can "simplify" the map object to decrease the size and boost rendering speed
 ```{r}
 
 #not run
-# states_geo_nocb_SIMPLIFIED <- rmapshaper::ms_simplify(states_geo_nocb, keep = 0.1)
+ states_geo_nocb_SIMPLIFIED <- rmapshaper::ms_simplify(states_geo_nocb, keep = 0.1)
 ```
 
 ```{r}
 # let's see the difference
-# tm_shape(states_geo_nocb_SIMPLIFIED) +
-#   tm_polygons()
+ tm_shape(states_geo_nocb_SIMPLIFIED) +
+   tm_polygons()
 ```
 
  2) What is a Coordinate Reference System (CRS) and why is it important for mapping more than one element?

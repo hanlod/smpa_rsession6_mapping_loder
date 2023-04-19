@@ -1,0 +1,90 @@
+---
+title: "Interactive Maps"
+author: "Aaron Kessler"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+format:
+  html:
+    self-contained: true
+    toc: true
+    toc-location: left
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(tigris)
+library(sf)
+library(tidycensus)
+library(htmltools)
+library(janitor)
+library(here)
+library(mapview)
+library(leafsync)
+library(leaflet.extras2)
+options(tigris_class = "sf")
+
+
+```
+
+# Interactive Maps with MapView Package
+
+A h/t to Sharon Machlis for turning people on to the Mapview package, and her excellent walkthroughs of it.
+
+For the data tonight we'll be using the tidycensus package to pull both census data, as well as geospatial boundaries. 
+Let's quickly review how we use it.
+
+```{r}
+
+# uncomment to run, then recomment it out so you don't run it every time
+
+ census_api_key("2a6f8c21a30d3024e038d67d7d4eba647dc79cd4", install=TRUE, overwrite=TRUE)
+
+
+```
+
+```{r}
+#chose variables we want
+myvars <- c(totalpop = "B01003_001",
+            medincome = "B19013_001",
+            medage = "B01002_001"
+)
+```
+
+
+```{r}
+#pull for VA counties
+va_counties_withgeo <- get_acs(geography = "county",
+                       variables = c(myvars),
+                       state = "VA",
+                       output = "wide",
+                       geometry = TRUE)
+
+va_counties_withgeo
+```
+
+```{r}
+joined_vacomparison <- readRDS("joined_vacomparison.rds")
+```
+
+```{r}
+
+va_counties_withgeo <- va_counties_withgeo %>% 
+  mutate(
+    NAME = str_replace(NAME, ", Virginia", ""),
+    NAME = str_to_upper(NAME)
+  )
+
+```
+
+```{r}
+
+joined <- left_join(va_counties_withgeo, joined_vacomparison, by = c("NAME" = "locality"))
+
+```
+
+
+```{r}
+mapview(joined, zcol = "youngkin_overperform")
+```
+
